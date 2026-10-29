@@ -1,5 +1,5 @@
 #!/bin/bash
-# Installs the Claude Code status line into ~/.claude on this machine.
+# Installs the Claude Code status line into ~/.claude and the tmux config into ~/.tmux.conf.
 # Merges the statusLine entry into ~/.claude/settings.json, keeping every other setting.
 set -euo pipefail
 
@@ -22,3 +22,8 @@ jq --argjson entry "$entry" '. * $entry' "$settings" > "$tmp"
 mv "$tmp" "$settings"
 
 echo "Installed status line into $claude_dir (previous settings saved to $settings.bak)"
+
+tmux_conf="$HOME/.tmux.conf"
+[ -f "$tmux_conf" ] && cp "$tmux_conf" "$tmux_conf.bak"
+cp "$repo_dir/tmux/tmux.conf" "$tmux_conf"
+echo "Installed tmux config into $tmux_conf"
